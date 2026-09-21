@@ -3,3 +3,10 @@ node_modules
 .env
 
 /generated/prisma
+
+# Ferramentas e assistentes de código
+.agents/
+.claude/
+.windsurf/
+adrs/
+skills-lock.json
