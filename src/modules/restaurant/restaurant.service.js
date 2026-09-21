@@ -14,7 +14,26 @@ async function createRestaurant(data) {
     });
 }
 
+async function updateRestaurant(id, data) {
+    return prisma.restaurant.update({
+        where: { id: Number(id) },
+        data: {
+            name: data.name,
+            category: data.category,
+            rating: data.rating || 0
+        }
+    });
+}
+
+async function deleteRestaurant(id) {
+    return prisma.restaurant.delete({
+        where: { id: Number(id) }
+    });
+}
+
 module.exports = {
     listRestaurants,
-    createRestaurant
+    createRestaurant,
+    updateRestaurant,
+    deleteRestaurant
 };
