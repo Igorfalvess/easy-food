@@ -9,4 +9,5 @@ node_modules
 .claude/
 .windsurf/
 adrs/
+skills-lock.jsoneasy-food/
 skills-lock.json
