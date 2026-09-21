@@ -3,122 +3,180 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EasyFood — Comanda</title>
+<title>EasyFood — Portal de Restaurantes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f6efe1;
-    --paper-dark: #ece1cb;
-    --ink: #2b2622;
-    --ink-soft: #6b6154;
-    --kitchen-green: #1f3d2b;
-    --kitchen-green-light: #2e5a3f;
-    --stamp-red: #b8402c;
-    --line: #d8cbae;
+    --bg-main: #f4f5f7;
+    --card-bg: #ffffff;
+    --primary: #ff4757;
+    --primary-hover: #e83849;
+    --secondary: #2f3542;
+    --text-main: #1e272e;
+    --text-muted: #747d8c;
+    --border: #f1f2f6;
+    --success: #2ed573;
+    --warning: #ffa502;
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --radius: 16px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--paper-dark);
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px);
-    background-size: 100% 32px;
-    color: var(--ink);
-    font-family: 'IBM Plex Mono', monospace;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
-    padding: 32px 16px 80px;
+    padding-bottom: 60px;
   }
 
-  .page {
-    max-width: 880px;
+  /* Header principal */
+  header.navbar {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav-container {
+    max-width: 1100px;
     margin: 0 auto;
-  }
-
-  header.masthead {
     display: flex;
-    align-items: baseline;
     justify-content: space-between;
-    border-bottom: 3px solid var(--ink);
-    padding-bottom: 16px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    gap: 8px;
+    align-items: center;
   }
 
-  .masthead h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 40px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: var(--kitchen-green);
-  }
-
-  .masthead .tagline {
-    font-size: 13px;
-    color: var(--ink-soft);
-  }
-
-  .session-strip {
+  .brand {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 13px;
   }
 
-  .session-strip .dot {
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+  }
+
+  .brand h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--secondary);
+    letter-spacing: -0.5px;
+  }
+
+  .brand h1 span { color: var(--primary); }
+
+  .session-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: #f1f2f6;
+    border-radius: 30px;
+    color: var(--text-muted);
+  }
+
+  .status-badge.active {
+    background: #e8faeClear;
+    background: #e1f9ec;
+    color: #20bf6b;
+  }
+
+  .status-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--stamp-red);
+    background: var(--text-muted);
   }
 
-  .session-strip.online .dot { background: var(--kitchen-green); }
+  .status-badge.active .status-dot { background: var(--success); }
 
-  #logoutBtn {
-    background: none;
-    border: 1px solid var(--ink);
-    color: var(--ink);
+  .btn-logout {
+    background: transparent;
+    border: 1px solid #dcdde1;
+    color: var(--text-muted);
     font-family: inherit;
-    font-size: 12px;
-    padding: 4px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
     cursor: pointer;
+    transition: all 0.2s;
   }
 
-  .grid {
+  .btn-logout:hover {
+    background: #ff475715;
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  /* Grid Layout principal */
+  .main-container {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding: 0 20px;
     display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 28px;
+    grid-template-columns: 340px 1fr;
+    gap: 32px;
   }
 
-  @media (max-width: 700px) {
-    .grid { grid-template-columns: 1fr; }
+  @media (max-width: 850px) {
+    .main-container { grid-template-columns: 1fr; }
   }
 
-  .ticket {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    box-shadow: 3px 3px 0 var(--line);
-    padding: 22px;
+  /* Cards e Containers */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
   }
 
-  .ticket h2 {
-    font-family: 'Oswald', sans-serif;
+  .card-title {
     font-size: 18px;
-    color: var(--kitchen-green);
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed var(--line);
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
+  /* Formulários */
   label {
     display: block;
-    font-size: 11px;
-    color: var(--ink-soft);
-    margin-bottom: 4px;
-    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    margin-top: 14px;
   }
 
   label:first-of-type { margin-top: 0; }
@@ -127,276 +185,465 @@
     width: 100%;
     font-family: inherit;
     font-size: 14px;
-    padding: 9px 10px;
-    border: 1px solid var(--line);
-    background: #fff;
-    color: var(--ink);
+    padding: 12px 14px;
+    border: 1px solid #dcdde1;
+    border-radius: 10px;
+    background: #fafafa;
+    color: var(--text-main);
+    transition: all 0.2s;
   }
 
   input:focus {
-    outline: 2px solid var(--kitchen-green);
-    outline-offset: 1px;
+    outline: none;
+    background: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.15);
   }
 
-  .btn {
+  .btn-primary {
     width: 100%;
-    margin-top: 16px;
-    padding: 11px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    margin-top: 20px;
+    padding: 13px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
     border: none;
+    border-radius: 10px;
     cursor: pointer;
     color: #fff;
-    background: var(--kitchen-green);
+    background: var(--primary);
+    box-shadow: 0 4px 14px rgba(255, 71, 87, 0.3);
+    transition: all 0.2s;
   }
 
-  .btn:hover { background: var(--kitchen-green-light); }
-  .btn:disabled { background: var(--ink-soft); cursor: not-allowed; }
-
-  .btn.stamp {
-    background: transparent;
-    color: var(--stamp-red);
-    border: 2px solid var(--stamp-red);
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(255, 71, 87, 0.4);
   }
-  .btn.stamp:hover { background: var(--stamp-red); color: #fff; }
 
-  .switch-mode {
+  .btn-secondary {
+    background: #f1f2f6;
+    color: var(--secondary);
+    box-shadow: none;
+  }
+
+  .btn-secondary:hover {
+    background: #e4e5ea;
+    box-shadow: none;
+  }
+
+  .switch-auth {
     text-align: center;
-    margin-top: 14px;
-    font-size: 12px;
-    color: var(--ink-soft);
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
   }
 
-  .switch-mode a { color: var(--kitchen-green); cursor: pointer; text-decoration: underline; }
+  .switch-auth a {
+    color: var(--primary);
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+  }
 
+  .switch-auth a:hover { text-decoration: underline; }
+
+  /* Feedback */
   .feedback {
-    margin-top: 12px;
-    font-size: 12px;
-    padding: 8px 10px;
+    margin-top: 14px;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 10px;
     display: none;
+    font-weight: 600;
   }
   .feedback.show { display: block; }
-  .feedback.error { background: #f4dcd6; color: var(--stamp-red); border: 1px solid var(--stamp-red); }
-  .feedback.ok { background: #dfe9e0; color: var(--kitchen-green); border: 1px solid var(--kitchen-green); }
+  .feedback.error { background: #ffe0e3; color: #d63031; }
+  .feedback.ok { background: #e1f9ec; color: #20bf6b; }
 
-  .locked-note {
-    font-size: 12px;
-    color: var(--ink-soft);
-    border: 1px dashed var(--line);
-    padding: 10px;
-    margin-top: 8px;
+  /* User profile card */
+  .profile-card {
+    text-align: center;
+    padding: 10px 0;
   }
+  .avatar {
+    width: 64px;
+    height: 64px;
+    background: #ffe0e3;
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 12px;
+  }
+  .user-name { font-weight: 800; font-size: 16px; color: var(--secondary); }
+  .user-email { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
 
-  .list-toolbar {
+  /* Lista de Restaurantes */
+  .toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
   }
 
-  #refreshBtn {
-    background: none;
-    border: 1px solid var(--ink);
+  .btn-refresh {
+    background: var(--card-bg);
+    border: 1px solid #dcdde1;
+    padding: 8px 14px;
+    border-radius: 20px;
     font-family: inherit;
-    font-size: 12px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-
-  .order-list { display: flex; flex-direction: column; gap: 10px; }
-
-  .order-card {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .order-card .num {
-    font-family: 'Oswald', sans-serif;
     font-size: 13px;
-    color: var(--ink-soft);
-    min-width: 28px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
   }
 
-  .order-card .info { flex: 1; }
+  .btn-refresh:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
 
-  .order-card .name {
-    font-family: 'Oswald', sans-serif;
+  .restaurant-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 720px;
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+
+  .restaurant-grid::-webkit-scrollbar { width: 6px; }
+  .restaurant-grid::-webkit-scrollbar-track { background: transparent; }
+  .restaurant-grid::-webkit-scrollbar-thumb { background: #dcdde1; border-radius: 10px; }
+
+  .restaurant-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+  }
+
+  .restaurant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: #e4e5ea;
+  }
+
+  .cover-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #f1f2f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  .details { flex: 1; }
+  .restaurant-name {
     font-size: 16px;
-    color: var(--ink);
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 4px;
   }
 
-  .order-card .meta { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+  .category-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: #f1f2f6;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
 
-  .order-card .rating {
-    font-family: 'Oswald', sans-serif;
-    font-size: 15px;
-    color: var(--kitchen-green);
-    border: 1px solid var(--kitchen-green);
-    padding: 3px 8px;
+  .rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #d97706;
+    background: #fef3c7;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .btn-action {
+    background: transparent;
+    border: 1px solid #dcdde1;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .btn-action.edit:hover {
+    background: #2f3542;
+    color: white;
+    border-color: #2f3542;
+  }
+
+  .btn-action.delete:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
   }
 
   .empty-state, .load-state {
     text-align: center;
-    padding: 40px 10px;
-    color: var(--ink-soft);
-    font-size: 13px;
+    padding: 48px 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
   }
 
   footer {
     text-align: center;
-    margin-top: 40px;
-    font-size: 11px;
-    color: var(--ink-soft);
+    margin-top: 50px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
   }
 </style>
 </head>
 <body>
 
-<div class="page">
-
-  <header class="masthead">
-    <div>
-      <h1>EasyFood</h1>
-      <div class="tagline">comanda de cadastro &amp; consulta de restaurantes</div>
-    </div>
-    <div class="session-strip" id="sessionStrip">
-      <span class="dot"></span>
-      <span id="sessionLabel">sem sessão aberta</span>
-      <button id="logoutBtn" style="display:none">sair</button>
+  <!-- Topbar / Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-logo">🍔</div>
+        <h1>Easy<span>Food</span></h1>
+      </div>
+      <div class="session-status">
+        <div class="status-badge" id="sessionBadge">
+          <span class="status-dot"></span>
+          <span id="sessionLabel">Visitante</span>
+        </div>
+        <button id="logoutBtn" class="btn-logout" style="display:none">Sair</button>
+      </div>
     </div>
   </header>
 
-  <div class="grid">
+  <!-- Conteúdo Principal -->
+  <div class="main-container">
 
-    <!-- Coluna esquerda: autenticação -->
-    <div class="ticket">
-      <h2 id="authTitle">Entrar</h2>
+    <!-- Painel de Login / Perfil -->
+    <div>
+      <div class="card">
+        <h2 class="card-title" id="authTitle">🔐 Acesso à Conta</h2>
 
-      <form id="loginForm">
-        <label for="loginEmail">e-mail</label>
-        <input type="email" id="loginEmail" required autocomplete="username">
+        <!-- Formulários de Login / Cadastro -->
+        <div id="authLoggedOut">
+          <form id="loginForm">
+            <label for="loginEmail">E-mail</label>
+            <input type="email" id="loginEmail" placeholder="seu@email.com" required autocomplete="username">
 
-        <label for="loginPassword">senha</label>
-        <input type="password" id="loginPassword" required autocomplete="current-password">
+            <label for="loginPassword">Senha</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
 
-        <button type="submit" class="btn">Entrar</button>
-      </form>
+            <button type="submit" class="btn-primary">Entrar no sistema</button>
+          </form>
 
-      <form id="registerForm" style="display:none">
-        <label for="regName">nome</label>
-        <input type="text" id="regName" required>
+          <form id="registerForm" style="display:none">
+            <label for="regName">Nome Completo</label>
+            <input type="text" id="regName" placeholder="Ex: Igor Silva" required>
 
-        <label for="regEmail">e-mail</label>
-        <input type="email" id="regEmail" required autocomplete="username">
+            <label for="regEmail">E-mail</label>
+            <input type="email" id="regEmail" placeholder="seu@email.com" required autocomplete="username">
 
-        <label for="regPassword">senha</label>
-        <input type="password" id="regPassword" required minlength="6" autocomplete="new-password">
+            <label for="regPassword">Senha</label>
+            <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password">
 
-        <button type="submit" class="btn">Criar conta</button>
-      </form>
+            <button type="submit" class="btn-primary">Criar minha conta</button>
+          </form>
 
-      <div class="switch-mode">
-        <span id="switchToRegister">não tem conta? <a>cadastre-se</a></span>
-        <span id="switchToLogin" style="display:none">já tem conta? <a>entrar</a></span>
+          <div class="switch-auth">
+            <span id="switchToRegister">Novo por aqui? <a>Cadastre-se</a></span>
+            <span id="switchToLogin" style="display:none">Já tem uma conta? <a>Fazer Login</a></span>
+          </div>
+        </div>
+
+        <!-- Perfil Logado -->
+        <div id="authLoggedIn" style="display:none" class="profile-card">
+          <div class="avatar">👤</div>
+          <div class="user-name" id="activeUserName">Usuário</div>
+          <div class="user-email" id="activeUserEmail">email@teste.com</div>
+          <button id="cardLogoutBtn" class="btn-primary btn-secondary">Encerrar Sessão</button>
+        </div>
+
+        <div class="feedback" id="authFeedback"></div>
       </div>
-
-      <div class="feedback" id="authFeedback"></div>
     </div>
 
-    <!-- Coluna direita: restaurantes -->
+    <!-- Coluna da Direita: Cadastro e Lista -->
     <div>
-      <div class="ticket" style="margin-bottom: 20px;">
-        <h2>Novo restaurante</h2>
-        <div id="lockedNote" class="locked-note">Faça login para liberar o cadastro. A consulta abaixo continua livre para qualquer visitante.</div>
+
+      <!-- Card Novo Restaurante -->
+      <div class="card" style="margin-bottom: 24px;">
+        <h2 class="card-title" id="formTitle">✨ Cadastrar Restaurante</h2>
+        <p id="lockedNote" style="font-size: 13px; color: var(--text-muted); margin-top: -10px; margin-bottom: 12px;">
+          🔒 Faça login para adicionar, editar ou remover estabelecimentos.
+        </p>
 
         <form id="restaurantForm" style="display:none">
-          <label for="rName">nome</label>
-          <input type="text" id="rName" required>
+          <input type="hidden" id="rId">
 
-          <label for="rCategory">categoria</label>
-          <input type="text" id="rCategory" required>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label for="rName">Nome do Restaurante</label>
+              <input type="text" id="rName" placeholder="Ex: Mago do Hambúrguer" required>
+            </div>
+            <div>
+              <label for="rCategory">Categoria</label>
+              <input type="text" id="rCategory" placeholder="Ex: Hamburgueria, Italiana" required>
+            </div>
+          </div>
 
-          <label for="rRating">nota (0 a 5)</label>
-          <input type="number" id="rRating" min="0" max="5" step="0.1" value="4.5">
+          <label for="rRating">Nota de Avaliação (0 a 5)</label>
+          <input type="number" id="rRating" min="0" max="5" step="0.1" value="4.8">
 
-          <button type="submit" class="btn stamp">Carimbar cadastro</button>
+          <button type="submit" class="btn-primary" id="btnSubmit">Salvar Restaurante</button>
+          <button type="button" class="btn-primary btn-secondary" id="btnCancelEdit" style="display:none; margin-top: 10px;">Cancelar Edição</button>
         </form>
 
         <div class="feedback" id="restaurantFeedback"></div>
       </div>
 
-      <div class="ticket">
-        <div class="list-toolbar">
-          <h2 style="border:none;padding:0;margin:0;">Restaurantes cadastrados</h2>
-          <button id="refreshBtn">atualizar</button>
+      <!-- Card Lista de Restaurantes -->
+      <div class="card">
+        <div class="toolbar">
+          <h2 class="card-title" style="margin-bottom: 0;">🍽️ Restaurantes em Destaque</h2>
+          <button id="refreshBtn" class="btn-refresh">🔄 Atualizar</button>
         </div>
-        <div class="order-list" id="restaurantList">
-          <div class="load-state">carregando comandas...</div>
+
+        <div class="restaurant-grid" id="restaurantList">
+          <div class="load-state">Carregando catálogo...</div>
         </div>
       </div>
+
     </div>
 
   </div>
 
-  <footer>EasyFood — projeto acadêmico de Arquitetura de Software</footer>
-</div>
+  <footer>EasyFood — Sistema de Gestão de Restaurantes</footer>
 
 <script>
-  const API_BASE = "http://localhost:3000";
+  const API_BASE = "";
   const tokenKey = "easyfood_token";
   const userKey = "easyfood_user";
 
-  // ---------- estado de sessão ----------
   function getToken() { return localStorage.getItem(tokenKey); }
+
   function getUser() {
-    try { return JSON.parse(localStorage.getItem(userKey)); } catch { return null; }
+    const rawData = localStorage.getItem(userKey);
+    if (!rawData) return null;
+    try { return JSON.parse(rawData); } catch (e) { return null; }
   }
+
   function setSession(token, user) {
     localStorage.setItem(tokenKey, token);
-    localStorage.setItem(userKey, JSON.stringify(user));
+    const userData = user || { name: "Usuário", email: "" };
+    localStorage.setItem(userKey, JSON.stringify(userData));
     renderSession();
   }
+
   function clearSession() {
     localStorage.removeItem(tokenKey);
     localStorage.removeItem(userKey);
     renderSession();
   }
 
+  // Função auxiliar para mapear emojis por categoria
+  function getCategoryEmoji(category) {
+    const cat = (category || "").toLowerCase();
+    if (cat.includes("hamburg") || cat.includes("burger")) return "🍔";
+    if (cat.includes("pizza") || cat.includes("italiana") || cat.includes("massa")) return "🍕";
+    if (cat.includes("japon") || cat.includes("sushi") || cat.includes("asiat")) return "🍣";
+    if (cat.includes("brasil") || cat.includes("caseira") || cat.includes("churrasco")) return "🥩";
+    if (cat.includes("portug")) return "🥖";
+    if (cat.includes("caf") || cat.includes("doce") || cat.includes("sobr")) return "☕";
+    return "🍽️";
+  }
+
   function renderSession() {
     const token = getToken();
     const user = getUser();
-    const strip = document.getElementById("sessionStrip");
+
+    const badge = document.getElementById("sessionBadge");
     const label = document.getElementById("sessionLabel");
     const logoutBtn = document.getElementById("logoutBtn");
-    const authTicket = document.querySelector(".ticket");
     const lockedNote = document.getElementById("lockedNote");
     const restaurantForm = document.getElementById("restaurantForm");
 
-    if (token && user) {
-      strip.classList.add("online");
-      label.textContent = "logado como " + user.name;
-      logoutBtn.style.display = "inline-block";
-      lockedNote.style.display = "none";
-      restaurantForm.style.display = "block";
+    const authLoggedOut = document.getElementById("authLoggedOut");
+    const authLoggedIn = document.getElementById("authLoggedIn");
+    const authTitle = document.getElementById("authTitle");
+    const activeUserName = document.getElementById("activeUserName");
+    const activeUserEmail = document.getElementById("activeUserEmail");
+
+    if (token) {
+      const name = user && user.name ? user.name : "Usuário";
+      const email = user && user.email ? user.email : "";
+
+      badge.classList.add("active");
+      label.textContent = name;
+      logoutBtn.style.display = "block";
+      if (lockedNote) lockedNote.style.display = "none";
+      if (restaurantForm) restaurantForm.style.display = "block";
+
+      if (authLoggedOut) authLoggedOut.style.display = "none";
+      if (authLoggedIn) authLoggedIn.style.display = "block";
+      if (authTitle) authTitle.textContent = "👤 Minha Conta";
+      if (activeUserName) activeUserName.textContent = name;
+      if (activeUserEmail) activeUserEmail.textContent = email;
     } else {
-      strip.classList.remove("online");
-      label.textContent = "sem sessão aberta";
+      badge.classList.remove("active");
+      label.textContent = "Visitante";
       logoutBtn.style.display = "none";
-      lockedNote.style.display = "block";
-      restaurantForm.style.display = "none";
+      if (lockedNote) lockedNote.style.display = "block";
+      if (restaurantForm) restaurantForm.style.display = "none";
+
+      if (authLoggedOut) authLoggedOut.style.display = "block";
+      if (authLoggedIn) authLoggedIn.style.display = "none";
+      if (authTitle) authTitle.textContent = "🔐 Acesso à Conta";
+      hideFeedback("authFeedback");
     }
+    loadRestaurants();
   }
 
   document.getElementById("logoutBtn").addEventListener("click", clearSession);
+  document.getElementById("cardLogoutBtn").addEventListener("click", clearSession);
 
-  // ---------- alternar login/cadastro ----------
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
   const authTitle = document.getElementById("authTitle");
@@ -406,7 +653,7 @@
     registerForm.style.display = "block";
     document.getElementById("switchToRegister").style.display = "none";
     document.getElementById("switchToLogin").style.display = "block";
-    authTitle.textContent = "Criar conta";
+    authTitle.textContent = "📝 Criar Nova Conta";
     hideFeedback("authFeedback");
   });
 
@@ -415,22 +662,21 @@
     loginForm.style.display = "block";
     document.getElementById("switchToLogin").style.display = "none";
     document.getElementById("switchToRegister").style.display = "block";
-    authTitle.textContent = "Entrar";
+    authTitle.textContent = "🔐 Acesso à Conta";
     hideFeedback("authFeedback");
   });
 
-  // ---------- feedback helper ----------
   function showFeedback(id, message, kind) {
     const el = document.getElementById(id);
     el.textContent = message;
     el.className = "feedback show " + kind;
   }
+
   function hideFeedback(id) {
     const el = document.getElementById(id);
     el.className = "feedback";
   }
 
-  // ---------- login ----------
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     hideFeedback("authFeedback");
@@ -450,15 +696,13 @@
         return;
       }
 
-      setSession(data.token, data.user);
-      showFeedback("authFeedback", "Login realizado.", "ok");
+      setSession(data.token, data.user || { email: email });
       loginForm.reset();
     } catch (err) {
-      showFeedback("authFeedback", "Servidor indisponível. A API está rodando em " + API_BASE + "?", "error");
+      showFeedback("authFeedback", "Servidor indisponível.", "error");
     }
   });
 
-  // ---------- cadastro de usuário ----------
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     hideFeedback("authFeedback");
@@ -479,74 +723,118 @@
         return;
       }
 
-      showFeedback("authFeedback", "Conta criada. Agora faça login.", "ok");
+      showFeedback("authFeedback", "Conta criada com sucesso! Faça login para continuar.", "ok");
       registerForm.reset();
       document.getElementById("switchToLogin").querySelector("a").click();
     } catch (err) {
-      showFeedback("authFeedback", "Servidor indisponível. A API está rodando em " + API_BASE + "?", "error");
+      showFeedback("authFeedback", "Servidor indisponível.", "error");
     }
   });
 
-  // ---------- listar restaurantes ----------
   async function loadRestaurants() {
     const listEl = document.getElementById("restaurantList");
-    listEl.innerHTML = '<div class="load-state">carregando comandas...</div>';
+    listEl.innerHTML = '<div class="load-state">Carregando catálogo...</div>';
+    const token = getToken();
 
     try {
       const res = await fetch(API_BASE + "/restaurants");
       const data = await res.json();
 
       if (!res.ok) {
-        listEl.innerHTML = '<div class="empty-state">Erro ao consultar restaurantes.</div>';
+        listEl.innerHTML = '<div class="empty-state">Erro ao carregar os restaurantes.</div>';
         return;
       }
 
       if (!data.length) {
-        listEl.innerHTML = '<div class="empty-state">Nenhum restaurante cadastrado ainda.</div>';
+        listEl.innerHTML = '<div class="empty-state">Nenhum restaurante cadastrado até o momento.</div>';
         return;
       }
 
-      listEl.innerHTML = data.map((r, i) => `
-        <div class="order-card">
-          <span class="num">#${String(r.id).padStart(3, "0")}</span>
-          <div class="info">
-            <div class="name">${escapeHtml(r.name)}</div>
-            <div class="meta">${escapeHtml(r.category || "sem categoria")}</div>
-          </div>
-          <span class="rating">${r.rating ?? "—"}</span>
-        </div>
-      `).join("");
-    } catch (err) {
-      listEl.innerHTML = '<div class="empty-state">Servidor indisponível. A API está rodando em ' + API_BASE + '?</div>';
-    }
-  }
+      listEl.innerHTML = "";
+      data.forEach(r => {
+        const card = document.createElement("div");
+        card.className = "restaurant-card";
 
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
+        const emoji = getCategoryEmoji(r.category);
+
+        const imgDiv = document.createElement("div");
+        imgDiv.className = "cover-img";
+        imgDiv.textContent = emoji;
+
+        const detailsDiv = document.createElement("div");
+        detailsDiv.className = "details";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "restaurant-name";
+        nameDiv.textContent = r.name || "Restaurante";
+
+        const catTag = document.createElement("span");
+        catTag.className = "category-tag";
+        catTag.textContent = (r.category || "Geral");
+
+        detailsDiv.appendChild(nameDiv);
+        detailsDiv.appendChild(catTag);
+
+        const ratingBadge = document.createElement("div");
+        ratingBadge.className = "rating-badge";
+        ratingBadge.innerHTML = `⭐ <span>${r.rating ?? "—"}</span>`;
+
+        card.appendChild(imgDiv);
+        card.appendChild(detailsDiv);
+        card.appendChild(ratingBadge);
+
+        if (token) {
+          const actionsDiv = document.createElement("div");
+          actionsDiv.className = "card-actions";
+
+          const editBtn = document.createElement("button");
+          editBtn.className = "btn-action edit";
+          editBtn.title = "Editar";
+          editBtn.innerHTML = "✏️";
+          editBtn.onclick = () => startEdit(r.id, r.name, r.category || "", r.rating || "");
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "btn-action delete";
+          deleteBtn.title = "Excluir";
+          deleteBtn.innerHTML = "🗑️";
+          deleteBtn.onclick = () => deleteRestaurant(r.id);
+
+          actionsDiv.appendChild(editBtn);
+          actionsDiv.appendChild(deleteBtn);
+          card.appendChild(actionsDiv);
+        }
+
+        listEl.appendChild(card);
+      });
+    } catch (err) {
+      listEl.innerHTML = '<div class="empty-state">Servidor indisponível.</div>';
+    }
   }
 
   document.getElementById("refreshBtn").addEventListener("click", loadRestaurants);
 
-  // ---------- cadastrar restaurante (rota protegida) ----------
   document.getElementById("restaurantForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     hideFeedback("restaurantFeedback");
 
     const token = getToken();
     if (!token) {
-      showFeedback("restaurantFeedback", "Faça login antes de cadastrar.", "error");
+      showFeedback("restaurantFeedback", "Faça login antes de realizar cadastros.", "error");
       return;
     }
 
+    const id = document.getElementById("rId").value;
     const name = document.getElementById("rName").value;
     const category = document.getElementById("rCategory").value;
     const rating = parseFloat(document.getElementById("rRating").value) || 0;
 
+    const isEdit = Boolean(id);
+    const url = isEdit ? `${API_BASE}/restaurants/${id}` : `${API_BASE}/restaurants`;
+    const method = isEdit ? "PUT" : "POST";
+
     try {
-      const res = await fetch(API_BASE + "/restaurants", {
-        method: "POST",
+      const res = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + token
@@ -556,22 +844,66 @@
       const data = await res.json();
 
       if (!res.ok) {
-        showFeedback("restaurantFeedback", data.error || "Não foi possível cadastrar.", "error");
+        showFeedback("restaurantFeedback", data.error || "Falha na operação.", "error");
         return;
       }
 
-      showFeedback("restaurantFeedback", "Restaurante carimbado com sucesso.", "ok");
-      document.getElementById("restaurantForm").reset();
-      document.getElementById("rRating").value = "4.5";
+      showFeedback("restaurantFeedback", isEdit ? "Alteração salva com sucesso!" : "Restaurante cadastrado com sucesso!", "ok");
+      cancelEdit();
       loadRestaurants();
     } catch (err) {
-      showFeedback("restaurantFeedback", "Servidor indisponível. A API está rodando em " + API_BASE + "?", "error");
+      showFeedback("restaurantFeedback", "Servidor indisponível.", "error");
     }
   });
 
-  // ---------- inicialização ----------
+  function startEdit(id, name, category, rating) {
+    document.getElementById("rId").value = id;
+    document.getElementById("rName").value = name;
+    document.getElementById("rCategory").value = category;
+    document.getElementById("rRating").value = rating;
+
+    document.getElementById("formTitle").textContent = "✏️ Editar Restaurante #" + String(id).padStart(3, "0");
+    document.getElementById("btnSubmit").textContent = "Salvar Alterações";
+    document.getElementById("btnCancelEdit").style.display = "block";
+  }
+
+  function cancelEdit() {
+    document.getElementById("rId").value = "";
+    document.getElementById("restaurantForm").reset();
+    document.getElementById("rRating").value = "4.8";
+
+    document.getElementById("formTitle").textContent = "✨ Cadastrar Restaurante";
+    document.getElementById("btnSubmit").textContent = "Salvar Restaurante";
+    document.getElementById("btnCancelEdit").style.display = "none";
+  }
+
+  document.getElementById("btnCancelEdit").addEventListener("click", cancelEdit);
+
+  async function deleteRestaurant(id) {
+    const token = getToken();
+    if (!token) return;
+
+    if (!confirm(`Deseja realmente remover o restaurante #${id}?`)) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/restaurants/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + token }
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        alert("Erro ao excluir: " + (data.error || "Não autorizado"));
+        return;
+      }
+
+      loadRestaurants();
+    } catch (err) {
+      alert("Erro ao conectar com o servidor.");
+    }
+  }
+
   renderSession();
-  loadRestaurants();
 </script>
 
 </body>
