@@ -8,10 +8,21 @@ datasource db {
 }
 
 model Restaurant {
-  id       Int      @id @default(autoincrement())
-  name     String   @db.VarChar(150)
-  category String?  @db.VarChar(100)
-  rating   Decimal? @db.Decimal(2, 1)
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(150)
+  category  String?   @db.VarChar(100)
+  rating    Decimal?  @db.Decimal(2, 1)
+  dishes    Dish[]    @relation("RestaurantDishes")
+}
+
+model Dish {
+  id           Int        @id @default(autoincrement())
+  name         String     @db.VarChar(150)
+  description  String?    @db.VarChar(255)
+  price        Decimal    @db.Decimal(10, 2)
+  imageUrl     String?    @db.VarChar(255)
+  restaurantId Int
+  restaurant   Restaurant @relation("RestaurantDishes", fields: [restaurantId], references: [id], onDelete: Cascade)
 }
 
 model User {

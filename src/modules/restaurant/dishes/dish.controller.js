@@ -1,4 +1,4 @@
-// src/modules/restaurant\dishes\dish.controller.js
+// src/modules/restaurant/dishes/dish.controller.js
 const dishService = require("./dish.service");
 
 async function create(req, res) {
@@ -23,6 +23,18 @@ async function create(req, res) {
   }
 }
 
+async function index(req, res) {
+  try {
+    const { restaurantId } = req.params;
+    const dishes = await dishService.getDishesByRestaurant(restaurantId);
+    return res.json(dishes);
+  } catch (error) {
+    console.error("Erro ao listar pratos:", error.message);
+    return res.status(500).json({ error: "Erro interno do servidor" });
+  }
+}
+
 module.exports = {
-  create
+  create,
+  index
 };
