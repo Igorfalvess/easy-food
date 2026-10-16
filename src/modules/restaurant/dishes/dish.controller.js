@@ -34,7 +34,36 @@ async function index(req, res) {
   }
 }
 
+async function remove(req, res) {
+  try {
+    const { restaurantId, id } = req.params;
+
+    const dish = await dishService.deleteDish(restaurantId, id);
+
+    const activityService = require("../../shared/activity.service");
+
+    try {
+      await activityService.log(
+        "DISH_DELETED",
+        `Prato: ${dish.name} | Restaurante ID: ${restaurantId}`
+      );
+    } catch (error) {
+      console.error("Erro ao registrar exclusão do prato:", error.message);
+    }
+
+    return res.status(204).send();
+  } catch (error) {
+    if (error.status === 404) {
+      return res.status(404).json({ error: error.message });
+    }
+
+    console.error("Erro ao excluir prato:", error.message);
+    return res.status(500).json({ error: "Erro interno do servidor" });
+  }
+}
+
 module.exports = {
   create,
-  index
+  index,
+  remove
 };

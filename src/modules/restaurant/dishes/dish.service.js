@@ -32,7 +32,31 @@ async function getDishesByRestaurant(restaurantId) {
   });
 }
 
+async function deleteDish(restaurantId, dishId) {
+  const dish = await prisma.dish.findFirst({
+    where: {
+      id: Number(dishId),
+      restaurantId: Number(restaurantId)
+    }
+  });
+
+  if (!dish) {
+    const error = new Error("Prato não encontrado neste restaurante");
+    error.status = 404;
+    throw error;
+  }
+
+  await prisma.dish.delete({
+    where: {
+      id: dish.id
+    }
+  });
+
+  return dish;
+}
+
 module.exports = {
   createDish,
-  getDishesByRestaurant
+  getDishesByRestaurant,
+  deleteDish
 };
