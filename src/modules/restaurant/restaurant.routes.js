@@ -1,12 +1,17 @@
-const express = require("express");
-const controller = require("./restaurant.controller");
-const authenticate = require("../auth/auth.middleware");
+// src/modules/restaurant/restaurant.routes.js
+const { Router } = require("express");
+const restaurantController = require("./restaurant.controller");
+const dishRoutes = require("./dishes/dish.routes");
 
-const router = express.Router();
+const router = Router();
 
-router.get("/", controller.list);
-router.post("/", authenticate, controller.create);
-router.put("/:id", authenticate, controller.update);
-router.delete("/:id", authenticate, controller.remove);
+// Rotas de Restaurantes
+router.get("/", restaurantController.list);
+router.post("/", restaurantController.create);
+router.put("/:id", restaurantController.update);
+router.delete("/:id", restaurantController.remove);
+
+// Redireciona as rotas de pratos para o subdomínio de pratos
+router.use("/:restaurantId/dishes", dishRoutes);
 
 module.exports = router;
