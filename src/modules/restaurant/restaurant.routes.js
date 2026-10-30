@@ -2,16 +2,19 @@
 const { Router } = require("express");
 const restaurantController = require("./restaurant.controller");
 const dishRoutes = require("./dishes/dish.routes");
+const authenticate = require("../auth/auth.middleware");
 
 const router = Router();
 
-// Rotas de Restaurantes
+// Consulta pública de restaurantes
 router.get("/", restaurantController.list);
-router.post("/", restaurantController.create);
-router.put("/:id", restaurantController.update);
-router.delete("/:id", restaurantController.remove);
 
-// Redireciona as rotas de pratos para o subdomínio de pratos
+// Operações de gerenciamento exigem autenticação
+router.post("/", authenticate, restaurantController.create);
+router.put("/:id", authenticate, restaurantController.update);
+router.delete("/:id", authenticate, restaurantController.remove);
+
+// Rotas de gerenciamento de pratos
 router.use("/:restaurantId/dishes", dishRoutes);
 
 module.exports = router;
