@@ -95,7 +95,7 @@
     .btn-small{padding:8px 10px;border-radius:9px;font-size:12px}
     .dishes-container{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
     .dishes-heading{font-size:11px;font-weight:800;color:var(--olive);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px}
-    .dish-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1eee7}
+    .dish-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #f1eee7}
     .dish-item:last-child{border-bottom:0}
     .dish-img{width:48px;height:48px;flex:0 0 48px;border-radius:10px;object-fit:cover;background:#f1eee5}
     .dish-placeholder{display:grid;place-items:center;font-size:23px}
@@ -573,18 +573,19 @@
           <div class="dishes-heading">Cardápio · ${dishes.length} ${dishes.length===1?"prato":"pratos"}</div>
 
           ${dishes.map(d=>`
-            <div class="dish-item">
-              ${d.imageUrl
-                ?`<img class="dish-img" src="${escapeHtml(imageUrl(d.imageUrl))}" alt="${escapeHtml(d.name)}" loading="lazy">`
-                :`<div class="dish-img dish-placeholder">🍽️</div>`
-              }
-
-              <div class="dish-info">
-                <div class="dish-name">${escapeHtml(d.name)}</div>
-                <div class="dish-desc">${escapeHtml(d.description||"")}</div>
+            <div class="dish-item" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1eee7;">
+              <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+                ${d.imageUrl
+                  ?`<img class="dish-img" src="${escapeHtml(imageUrl(d.imageUrl))}" alt="${escapeHtml(d.name)}" loading="lazy" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover;">`
+                  :`<div class="dish-img dish-placeholder" style="width: 48px; height: 48px; border-radius: 10px; display: grid; place-items: center; background: #f1eee5;">🍽️</div>`
+                }
+                <div class="dish-info" style="flex: 1; min-width: 0;">
+                  <div class="dish-name" style="font-size: 13px; font-weight: 800;">${escapeHtml(d.name)}</div>
+                  <div class="dish-desc" style="font-size: 11px; color: var(--muted);">${escapeHtml(d.description||"")}</div>
+                  <div class="dish-price" style="font-size: 12px; font-weight: 800; color: var(--green);">${formatPrice(d.price)}</div>
+                </div>
               </div>
-
-              <div class="dish-price">${formatPrice(d.price)}</div>
+              <button class="btn btn-outline btn-small" type="button" onclick="deleteDish('${escapeHtml(d.id)}')" style="padding: 4px 8px; font-size: 11px; color: #b83e2c; border-color: #f1bdd5;">Excluir</button>
             </div>
           `).join("")}
         </div>
@@ -820,6 +821,35 @@
 
         if(!response.ok){
           alert(data.error||"Não foi possível excluir o restaurante.");
+          return;
+        }
+
+        await loadRestaurants();
+
+      }catch(error){
+        alert("Não foi possível conectar ao servidor.");
+      }
+    }
+
+    // EXCLUSÃO DE PRATO
+    async function deleteDish(dishId){
+      if(!confirm(`Deseja realmente excluir este prato?`)){
+        return;
+      }
+
+      try{
+        const response=await fetch(
+          `${API_BASE}/dishes/${encodeURIComponent(dishId)}`,
+          {
+            method:"DELETE",
+            headers:getAuthHeaders()
+          }
+        );
+
+        const data=await response.json().catch(()=>({}));
+
+        if(!response.ok){
+          alert(data.error||"Não foi possível excluir o prato.");
           return;
         }
 
