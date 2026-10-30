@@ -1,7 +1,8 @@
+
 const restaurantService = require("./restaurant.service");
 
-async function  list(req, res) {
-    try {
+async function list(req, res) {
+  try {
     const restaurantes = await restaurantService.listRestaurants();
     res.json(restaurantes);
   } catch (error) {
@@ -14,7 +15,9 @@ async function create(req, res) {
   const { name, category, rating } = req.body;
 
   if (!name || !category) {
-    return res.status(400).json({ error: "Nome e categoria são obrigatórios" });
+    return res.status(400).json({
+      error: "Nome e categoria são obrigatórios"
+    });
   }
 
   try {
@@ -34,19 +37,36 @@ async function update(req, res) {
   const { name, category, rating } = req.body;
 
   if (!name || !category) {
-    return res.status(400).json({ error: "Nome e categoria são obrigatórios" });
+    return res.status(400).json({
+      error: "Nome e categoria são obrigatórios"
+    });
   }
 
   try {
-    const restaurant = await restaurantService.updateRestaurant(req.params.id, {
-      name, category, rating: rating || 0
-    });
+    const restaurant = await restaurantService.updateRestaurant(
+      req.params.id,
+      {
+        name,
+        category,
+        rating: rating || 0
+      },
+      req.user
+    );
 
     res.json(restaurant);
   } catch (error) {
-    if (error.code === "P2025") {
-      return res.status(404).json({ error: "Restaurante não encontrado" });
+    if (error.code === "RESTAURANT_NOT_FOUND_OR_FORBIDDEN") {
+      return res.status(404).json({
+        error: "Restaurante não encontrado"
+      });
     }
+
+    if (error.code === "INVALID_AUTHENTICATED_USER") {
+      return res.status(401).json({
+        error: "Usuário autenticado inválido"
+      });
+    }
+
     console.error("Erro ao atualizar restaurante:", error.message);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
@@ -54,15 +74,28 @@ async function update(req, res) {
 
 async function remove(req, res) {
   try {
-    await restaurantService.deleteRestaurant(req.params.id);
+    await restaurantService.deleteRestaurant(
+      req.params.id,
+      req.user
+    );
+
     res.status(204).send();
   } catch (error) {
-    if (error.code === "P2025") {
-      return res.status(404).json({ error: "Restaurante não encontrado" });
+    if (error.code === "RESTAURANT_NOT_FOUND_OR_FORBIDDEN") {
+      return res.status(404).json({
+        error: "Restaurante não encontrado"
+      });
     }
+
+    if (error.code === "INVALID_AUTHENTICATED_USER") {
+      return res.status(401).json({
+        error: "Usuário autenticado inválido"
+      });
+    }
+
     console.error("Erro ao excluir restaurante:", error.message);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 }
 
-module.exports = {list, create, update, remove};
+module.exports = { list, create, update, remove };

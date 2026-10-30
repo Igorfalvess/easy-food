@@ -1,12 +1,20 @@
-const express = require("express");
-const controller = require("./restaurant.controller");
+// src/modules/restaurant/restaurant.routes.js
+const { Router } = require("express");
+const restaurantController = require("./restaurant.controller");
+const dishRoutes = require("./dishes/dish.routes");
 const authenticate = require("../auth/auth.middleware");
 
-const router = express.Router();
+const router = Router();
 
-router.get("/", controller.list);
-router.post("/", authenticate, controller.create);
-router.put("/:id", authenticate, controller.update);
-router.delete("/:id", authenticate, controller.remove);
+// Consulta pública de restaurantes
+router.get("/", restaurantController.list);
+
+// Operações de gerenciamento exigem autenticação
+router.post("/", authenticate, restaurantController.create);
+router.put("/:id", authenticate, restaurantController.update);
+router.delete("/:id", authenticate, restaurantController.remove);
+
+// Rotas de gerenciamento de pratos
+router.use("/:restaurantId/dishes", dishRoutes);
 
 module.exports = router;

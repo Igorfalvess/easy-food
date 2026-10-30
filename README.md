@@ -39,5 +39,22 @@ Siga os passos abaixo para clonar e rodar a aplicação na sua máquina:
    git clone [https://github.com/Igorfalvess/easy-food.git](https://github.com/Igorfalvess/easy-food.git)
    cd easy-food
 
+
+## 🖼️ Upload e disponibilização de imagens
+
+O backend utiliza o middleware `express.static` para disponibilizar as imagens enviadas durante o cadastro de pratos.
+
+- **Diretório de armazenamento:** `uploads/`, localizado na raiz do projeto.
+- **Rota pública:** `/uploads/:nomeDoArquivo`.
+- **Configuração:** o middleware está definido em `src/app.js`, utilizando `path.join(__dirname, "../uploads")`.
+- **Acesso:** após o upload, a imagem pode ser consultada por meio da URL retornada pela API, combinada com o endereço base do servidor.
+
+### Validação
+
+A disponibilização dos arquivos foi validada localmente com uma requisição HTTP que retornou `200 OK` para uma imagem armazenada no diretório `uploads/`.
+
+> Observação: a disponibilização estática dos arquivos não significa, por si só, que o processamento de imagens via FaaS esteja concluído. Essa integração deve ser documentada conforme sua implementação efetiva.
+
+
 ##  💻 Autor
 Desenvolvido por Igor F. Alves.
