@@ -1,27 +1,19 @@
-
 const { Router } = require("express");
 const multer = require("multer");
 const dishController = require("./dish.controller");
 const authenticate = require("../../auth/auth.middleware");
-const authorizeRestaurantOwner = require("./restaurant-owner.middleware");
 
 const upload = multer({ dest: "uploads/" });
 
 const router = Router({ mergeParams: true });
 
-// Cadastro: autentica, verifica a propriedade e só então processa a imagem.
-router.post(
-  "/",
-  authenticate,
-  authorizeRestaurantOwner,
-  upload.single("image"),
-  dishController.create
-);
+// POST protegido: 'authenticate' vem ANTES do upload para barrar quem não tem token
+router.post("/", authenticate, upload.single("image"), dishController.create);
 
-// Consulta pública dos pratos.
+// GET público: qualquer um pode listar os pratos
 router.get("/", dishController.index);
 
-// Exclusão exige autenticação e validação de propriedade no Service.
+// DELETE protegido: apenas usuários autenticados (e donos) podem excluir
 router.delete("/:id", authenticate, dishController.remove);
 
 module.exports = router;
